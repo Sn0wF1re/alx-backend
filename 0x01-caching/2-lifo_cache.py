@@ -2,19 +2,21 @@
 """
 Create class LIFOCache
 """
+from collections import OrderedDict
+
 BaseCaching = __import__('base_caching').BaseCaching
 
 
 class LIFOCache(BaseCaching):
     """
-    Create a class LIFOCache that inherits
-    from BaseCaching and is a caching system
+    Implements LIFO cache replacement policy
     """
     def __init__(self):
         """
-        Initialize class
+        Initialize super class
         """
         super().__init__()
+        self.cache_data = OrderedDict()
 
     def put(self, key, item):
         """
@@ -22,21 +24,20 @@ class LIFOCache(BaseCaching):
         for the key key
         """
         if key is None or item is None:
-            pass
-        else:
-            length = len(self.cache_data)
-            if length >= BaseCaching.MAX_ITEMS and key not in self.cache_data:
-                last_key = next(reversed(self.cache_data))
-                print(f"DISCARD: {last_key}")
-                self.cache_data.pop(last_key)
-            if key in self.cache_data:
-                self.cache_data.pop(key)
-            self.cache_data[key] = item
+            return
+
+        if key in self.cache_data:
+            self.cache_data.pop(key)
+        elif len(self.cache_data) >= BaseCaching.MAX_ITEMS:
+            last_key = next(reversed(self.cache_data))
+            print(f"DISCARD: {last_key}")
+            self.cache_data.pop(last_key)
+        self.cache_data[key] = item
 
     def get(self, key):
         """
-        return the value in self.cache_data linked to key
+        return value in self.cache_data linked to key
         """
-        if key is not None and key in self.cache_data:
+        if key in self.cache_data and key is not None:
             return self.cache_data[key]
         return None
