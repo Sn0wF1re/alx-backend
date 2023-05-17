@@ -7,6 +7,7 @@ BaseCaching = __import__('base_caching').BaseCaching
 
 class FIFOCache(BaseCaching):
     """
+    Implements FIFO cache replacement policy
     """
     def __init__(self):
         """
