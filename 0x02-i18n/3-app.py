@@ -2,12 +2,15 @@
 """
 Set up a basic Flask app
 """
-from flask import Flask, render_template, request
+from flask import (
+    Flask,
+    render_template,
+    request
+)
 from flask_babel import Babel
-from flask_babel import gettext as _
 
 
-class Config:
+class Config(object):
     """
     Configure available languages in app
     """
@@ -16,28 +19,26 @@ class Config:
     BABEL_DEFAULT_TIMEZONE = "UTC"
 
 
-config = Config()
-
 app = Flask(__name__)
-app.config.from_object(config)
+app.config.from_object(Config)
 babel = Babel(app)
 
 
 @babel.localeselector
-def get_locale() -> str:
+def get_locale():
     """
     determine the best match with our supported languages
     """
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
-@app.route("/", strict_slashes=False)
+@app.route('/', strict_slashes=False)
 def index() -> str:
     """
-    Renders index template
+    Render index template
     """
-    return render_template("3-index.html")
+    return render_template('3-index.html')
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host="0.0.0.0")
