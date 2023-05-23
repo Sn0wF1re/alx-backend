@@ -40,16 +40,15 @@ def get_user():
     or if login_as was not passed
     """
     id = request.args.get('login_as', None)
-    if id in users and id is not None and type(id) is int:
-        return users.get(id)
+    if id is not None and int(id) in users.keys():
+        return users.get(int(id))
     return None
 
 
 @app.before_request
 def before_request():
     """
-    use get_user to find a user if any,
-    and set it as a global on flask.g.user
+    Add user to flask.g if user is found
     """
     user = get_user()
     g.user = user
