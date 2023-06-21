@@ -4,7 +4,7 @@ import { expect } from 'chai';
 
 const queue = createQueue();
 
-describe('createPushNtificationJobs', function () {
+describe('createPushNotificationJobs', function () {
   before(function () {
     queue.testMode.enter();
   });
